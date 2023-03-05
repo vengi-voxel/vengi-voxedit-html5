@@ -1,120 +1,109 @@
-<!doctypehtml>
-    <html lang=en-us>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 
-    <head>
-        <meta charset=utf-8>
-        <meta content="text/html; charset=utf-8" http-equiv=Content-Type>
-        <title>voxedit</title>
-        <style>
-            body {
-                font-family: arial;
-                margin: 0;
-                padding: none;
-                background-color: #3c3c3c
-            }
+<head>
+    <meta charset="UTF-8" />
+    <title>Vengi Voxedit</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: #343434;
+            color: #fff;
+            line-height: 1.3;
+        }
 
-            .emscripten {
-                padding-right: 0;
-                margin-left: auto;
-                margin-right: auto;
-                display: block
-            }
+        .header {
+            color: #ccc;
+            text-align: left;
+            padding-left: 20px;
+            font-family: "Arial Black", Gadget, sans-serif;
+            font-size: 60px;
+            margin-top: 0px;
+        }
 
-            div.emscripten {
-                text-align: center
-            }
+        .header-item {
+            font-size: 30px;
+            padding-left: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-            canvas.emscripten {
-                border: 0 none;
-                background-color: #000
-            }
+        .voxedit-item {
+            font-size: 24px;
+            padding-left: 10px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-            .spinner {
-                height: 30px;
-                width: 30px;
-                margin: 0;
-                margin-top: 20px;
-                margin-left: 20px;
-                display: inline-block;
-                vertical-align: top;
-                -webkit-animation: rotation .8s linear infinite;
-                -moz-animation: rotation .8s linear infinite;
-                -o-animation: rotation .8s linear infinite;
-                animation: rotation .8s linear infinite;
-                border-left: 5px solid #ebebeb;
-                border-right: 5px solid #ebebeb;
-                border-bottom: 5px solid #ebebeb;
-                border-top: 5px solid #787878;
-                border-radius: 100%;
-                background-color: #bdd72e
-            }
+        .link {
+            text-decoration: none;
+            color: #aaa;
+        }
 
-            @-webkit-keyframes rotation {
-                from {
-                    -webkit-transform: rotate(0)
-                }
+        .voxedit-link {
+            margin-top: 40px;
+            text-decoration: none;
+            color: #999;
+            cursor: pointer;
+            display: block;
+        }
 
-                to {
-                    -webkit-transform: rotate(360deg)
-                }
-            }
+        .main {
+            width: 980px;
+            margin: 0 auto;
+        }
 
-            @-moz-keyframes rotation {
-                from {
-                    -moz-transform: rotate(0)
-                }
+        .spacer {
+            width: 1024px;
+            height: 1px;
+            display: block;
+            clear: both;
+        }
 
-                to {
-                    -moz-transform: rotate(360deg)
-                }
-            }
+        br {
+            display: block;
+            margin: 10px 0;
+        }
 
-            @-o-keyframes rotation {
-                from {
-                    -o-transform: rotate(0)
-                }
+        #images{
+            text-align:center;
+            margin:50px auto;
+        }
 
-                to {
-                    -o-transform: rotate(360deg)
-                }
-            }
+        #images a {
+            margin:0px 20px;
+            display:inline-block;
+        }
+    </style>
+</head>
 
-            @keyframes rotation {
-                from {
-                    transform: rotate(0)
-                }
+<body>
+    <div class="main">
+        <a href="https://github.com/mgerhardy/vengi"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://camo.githubusercontent.com/82b228a3648bf44fc1163ef44c62fcc60081495e/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_red_aa0000.png"></a>
 
-                to {
-                    transform: rotate(360deg)
-                }
-            }
-
-            #status {
-                display: inline-block;
-                vertical-align: top;
-                margin-top: 30px;
-                margin-left: 20px;
-                font-weight: 700;
-                color: #f5f5f5
-            }
-
-            #progress {
-                height: 20px;
-                width: 300px
-            }
-        </style>
-        <script src="./coi-serviceworker.js"></script>
-    </head>
-
-    <body style=zoom:1.0>
-        <div id=preload>
-            <div class=spinner id=spinner></div>
-            <div class=emscripten id=status>Downloading...</div>
+        <div class="header">
+            <span class="header-item"><a class="link" href="https://github.com/mgerhardy/vengi">github</a></span>
+            <span class="header-item"><a class="link" href="https://twitter.com/MartinGerhardy">twitter</a></span>
+            <span class="header-item"><a class="link" href="https://discord.gg/AgjCPXy">discord</a></span>
+            <span class="header-item"><a class="link" href="https://github.com/mgerhardy/vengi/issues?q=is%3Aissue+is%3Aopen+label%3A%22OS%3A+emscripten%22">known issues</a></span>
         </div>
-        <div class=emscripten><progress hidden id=progress max=100 value=0></progress><canvas class=emscripten id=canvas
-                oncontextmenu=event.preventDefault() tabindex=-1></canvas></div>
-        <script>var statusElement = document.getElementById("status"), progressElement = document.getElementById("progress"), spinnerElement = document.getElementById("spinner"), Module = { preRun: [], postRun: [], print: function (e) { arguments.length > 1 && (e = Array.prototype.slice.call(arguments).join(" ")), console.log(e) }, canvas: function () { var e = document.getElementById("canvas"); return e.addEventListener("webglcontextlost", (function (e) { alert("WebGL context lost. You will need to reload the page."), e.preventDefault() }), !1), e }(), setStatus: function (e) { if (Module.setStatus.last || (Module.setStatus.last = { time: Date.now(), text: "" }), e !== Module.setStatus.last.text) { var t = e.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/), n = Date.now(); t && n - Module.setStatus.last.time < 30 || (Module.setStatus.last.time = n, Module.setStatus.last.text = e, t ? (e = t[1], progressElement.value = 100 * parseInt(t[2]), progressElement.max = 100 * parseInt(t[4]), progressElement.hidden = !1, spinnerElement.hidden = !1) : e || (progressElement.value = null, progressElement.max = null, progressElement.hidden = !0, spinnerElement.style.display = "none"), statusElement.innerHTML = e) } }, totalDependencies: 0, monitorRunDependencies: function (e) { this.totalDependencies = Math.max(this.totalDependencies, e), Module.setStatus(e ? "Preparing... (" + (this.totalDependencies - e) + "/" + this.totalDependencies + ")" : "All downloads complete.") } }; Module.setStatus("Downloading..."), window.onerror = function (e) { Module.setStatus("Exception thrown, see JavaScript console"), spinnerElement.style.display = "none", Module.setStatus = function (e) { e && console.error("[post-exception status] " + e) } }</script>
-        <script async src=vengi-voxedit.js></script>
-    </body>
 
-    </html>
+        <div>
+            This is the alpha version of vengi voxedit for the web. Expect bugs to happen - you currently can't easily save
+            or download your work - so it's just a playground. There are native versions of the voxedit available for
+            Windows, OSX and Linux.
+            <br />
+            If you find issues, please report them and help me to fix them.
+            <br />
+            Find more information about vengi and the other voxel related tools <a class="link" href="https://mgerhardy.github.io/vengi/">here</a>.
+        </div>
+
+        <div id="images">
+            <a class="link" href="vengi-voxedit.html">
+                <img width=1024 src="https://raw.githubusercontent.com/wiki/mgerhardy/vengi/images/voxedit-02_2023.png"/>
+                <br/>Start voxedit
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
