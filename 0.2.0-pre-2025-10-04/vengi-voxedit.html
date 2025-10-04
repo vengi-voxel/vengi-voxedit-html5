@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>voxedit</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vengi Voxel Tools" />
+    <meta property="og:description" content="Voxel tools for artists and developers" />
+    <meta property="og:image" content="https://raw.githubusercontent.com/wiki/vengi-voxel/vengi/images/voxedit-07_2024.png" />
+
+    <meta name="keywords" content="voxel,voxelart,voxeleditor,magicavoxel,cubzh,qubicle,sandbox,minecraft,quake,starmade,cubeworld,goxel,aceofspades,binvox,cnc,gltf,animation" />
+    <meta name="description" content="Voxel tools for artists and developers">
+    <title>voxedit</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: black
+      }
+
+      .emscripten {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        margin: 0px;
+        border: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: block;
+        image-rendering: optimizeSpeed;
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -o-crisp-edges;
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: optimize-contrast;
+        image-rendering: crisp-edges;
+        image-rendering: pixelated;
+        -ms-interpolation-mode: nearest-neighbor;
+      }
+    </style>
+    <script src="./coi-serviceworker.js"></script>
+  </head>
+  <body>
+    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+
+    <script type='text/javascript'>
+      var Module = {
+        preRun: [],
+        print: (...args) => console.log('[stdout]: ' + args.join(' ')),
+        printErr: (...args) => console.log('[stderr]: ' + args.join(' ')),
+        canvas: (function() {
+            var canvas = document.getElementById('canvas');
+            canvas.addEventListener("webglcontextlost", function(e) { alert('FIXME: WebGL context lost, please reload the page'); e.preventDefault(); }, false);
+            return canvas;
+        })()
+      };
+      window.onerror = (event) => console.log('[onerror]: ' + event.message);
+    </script>
+    <script async type="text/javascript" src="vengi-voxedit.js"></script>
+  </body>
+</html>
